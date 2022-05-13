@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{36571628-728C-4ACD-A47F-503BA91C5D43}</ProjectGuid>
+    <RootNamespace>MMCore</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="MMCommon.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="MMCommon.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)MMCore.lib</OutputFile>
+      <AdditionalDependencies>Iphlpapi.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)MMCore.lib</OutputFile>
+      <AdditionalDependencies>Iphlpapi.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\CircularBuffer.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Configuration.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\CoreCallback.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\CoreProperty.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\DeviceManager.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\AutoFocusInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\CameraInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\DeviceInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\GalvoInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\HubInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\ImageProcessorInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\MagnifierInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\SerialInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\ShutterInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\SignalIOInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\SLMInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\StageInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\StateInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Devices\XYStageInstance.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Error.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\FrameBuffer.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Host.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LibraryInfo\LibraryPathsWindows.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedDeviceAdapter.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModule.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModuleImpl.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModuleImplWindows.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Logging\Metadata.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\LogManager.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\MMCore.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\PluginManager.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Semaphore.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\Task.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\TaskSet.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\TaskSet_CopyMemory.cpp" />
+    <ClCompile Include="..\mmCoreAndDevices\MMCore\ThreadPool.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\CircularBuffer.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\ConfigGroup.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Configuration.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\CoreCallback.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\CoreProperty.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\CoreUtils.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\DeviceManager.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\AutoFocusInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\CameraInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\DeviceInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\DeviceInstanceBase.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\DeviceInstances.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\GalvoInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\GenericInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\HubInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\ImageProcessorInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\MagnifierInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\SerialInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\ShutterInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\SignalIOInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\SLMInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\StageInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\StateInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Devices\XYStageInstance.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Error.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\FrameBuffer.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Host.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LibraryInfo\LibraryPaths.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedDeviceAdapter.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModule.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModuleImpl.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LoadableModules\LoadedModuleImplWindows.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericEntryFilter.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericLinePacket.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericLogger.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericLoggingCore.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericMetadata.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericPacketArray.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericPacketQueue.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericSink.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\GenericStreamSink.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\Logger.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\Logging.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\Metadata.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Logging\MetadataFormatter.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\LogManager.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\MMCore.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\MMEventCallback.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\PluginManager.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Semaphore.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\Task.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\TaskSet.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\TaskSet_CopyMemory.h" />
+    <ClInclude Include="..\mmCoreAndDevices\MMCore\ThreadPool.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="MMDevice-SharedRuntime.vcxproj">
+      <Project>{b8c95f39-54bf-40a9-807b-598df2821d55}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
