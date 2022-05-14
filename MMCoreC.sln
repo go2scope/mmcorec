@@ -10,7 +10,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MMCoreC", "MMCoreC\MMCoreC.vcxproj", "{0CD32C41-6B9C-49EC-AAC7-150F5220FC56}"
 	ProjectSection(ProjectDependencies) = postProject
 		{36571628-728C-4ACD-A47F-503BA91C5D43} = {36571628-728C-4ACD-A47F-503BA91C5D43}
+		{806A629B-7EAA-4265-A4C0-8A0EC03B104F} = {806A629B-7EAA-4265-A4C0-8A0EC03B104F}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoCamera", "MMCore\DemoCamera.vcxproj", "{806A629B-7EAA-4265-A4C0-8A0EC03B104F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +33,10 @@ Global
 		{0CD32C41-6B9C-49EC-AAC7-150F5220FC56}.Debug|x64.Build.0 = Debug|x64
 		{0CD32C41-6B9C-49EC-AAC7-150F5220FC56}.Release|x64.ActiveCfg = Release|x64
 		{0CD32C41-6B9C-49EC-AAC7-150F5220FC56}.Release|x64.Build.0 = Release|x64
+		{806A629B-7EAA-4265-A4C0-8A0EC03B104F}.Debug|x64.ActiveCfg = Debug|x64
+		{806A629B-7EAA-4265-A4C0-8A0EC03B104F}.Debug|x64.Build.0 = Debug|x64
+		{806A629B-7EAA-4265-A4C0-8A0EC03B104F}.Release|x64.ActiveCfg = Release|x64
+		{806A629B-7EAA-4265-A4C0-8A0EC03B104F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
