@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "MMCoreC.h"
-#include "MMCore.h"
-#include "Error.h"
+#include "..\mmCoreAndDevices\MMCore\MMCore.h"
+#include "..\mmCoreAndDevices\MMCore\Error.h"
 #include <string>
 
 #ifdef WIN32
@@ -27,7 +27,7 @@ int G2S_OK()
 int G2S_ERROR(CMMError& e)
 {
    lastErrorText = e.what();
-   lastErrorCode = e.code();
+   lastErrorCode = e.getCode();
    return lastErrorCode;
 }
 
@@ -54,7 +54,7 @@ G2SCLIENTC_API g2s_create_client()
 {
    if (core == 0)
    {
-      core = new MMCore();
+      core = new CMMCore();
       return G2S_OK();
    }
    
@@ -160,9 +160,9 @@ G2SCLIENTC_API g2s_setExposure(double expMs)
    CHECK_INSTANCE;
    try
    {
-      core->cameraSetExposure(expMs);
+      core->setExposure(expMs);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -178,9 +178,9 @@ G2SCLIENTC_API g2s_getExposure(double* expMs)
    CHECK_INSTANCE;
    try
    {
-      *expMs = core->cameraGetExposure();
+      *expMs = core->getExposure();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -203,9 +203,9 @@ G2SCLIENTC_API g2s_getImage(unsigned char* imgBuf, size_t bufSize)
    CHECK_INSTANCE;
    try
    {
-      memmove(imgBuf, &core->cameraGetImageBuffer()[0], bufSize);
+      memmove(imgBuf, core->getImage(), bufSize);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -222,9 +222,9 @@ G2SCLIENTC_API g2s_snapImage()
    CHECK_INSTANCE;
    try
    {
-      core->cameraSnapImage();
+      core->snapImage();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -240,9 +240,9 @@ G2SCLIENTC_API g2s_getImageWidth(unsigned* w)
    CHECK_INSTANCE;
    try
    {
-      *w = core->cameraGetImageWidth();
+      *w = core->getImageWidth();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -258,9 +258,9 @@ G2SCLIENTC_API g2s_getImageHeight(unsigned* h)
    CHECK_INSTANCE;
    try
    {
-      *h = core->cameraGetImageHeight();
+      *h = core->getImageHeight();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -276,9 +276,9 @@ G2SCLIENTC_API g2s_getBytesPerPixel(unsigned* bytesPP)
    CHECK_INSTANCE;
    try
    {
-      *bytesPP = core->cameraGetImageHeight();
+      *bytesPP = core->getImageHeight();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -294,9 +294,9 @@ G2SCLIENTC_API g2s_getImageBitDepth(unsigned* bitsPP)
    CHECK_INSTANCE;
    try
    {
-      *bitsPP = core->cameraGetImageBitDepth();
+      *bitsPP = core->getImageBitDepth();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -319,9 +319,9 @@ G2SCLIENTC_API g2s_getNumberOfComponents(unsigned* numComp)
    CHECK_INSTANCE;
    try
    {
-      *numComp = core->cameraGetNumberOfComponents();
+      *numComp = core->getNumberOfComponents();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -338,9 +338,9 @@ G2SCLIENTC_API g2s_getNumberOfCameraChannels(unsigned* numChan)
    CHECK_INSTANCE;
    try
    {
-      *numChan = core->cameraGetNumberOfCameraChannels();
+      *numChan = core->getNumberOfCameraChannels();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -358,10 +358,10 @@ G2SCLIENTC_API g2s_getCameraChannelName(unsigned chan, char* name, size_t maxLen
    CHECK_INSTANCE;
    try
    {
-      string chName = core->cameraGetCameraChannelName(chan);
+      string chName = core->getCameraChannelName(chan);
       STRCPYFUNC(name, maxLength, chName.c_str());
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -379,9 +379,9 @@ G2SCLIENTC_API g2s_getImageBufferSize(size_t* bufSize)
    CHECK_INSTANCE;
    try
    {
-      *bufSize = (size_t)core->cameraGetImageBufferSize();
+      *bufSize = (size_t)core->getImageBufferSize();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -399,10 +399,10 @@ G2SCLIENTC_API g2s_getNumberOfDeviceProperties(const char* label, size_t* num)
    CHECK_INSTANCE;
    try
    {
-      vector<string> devNames = core->propertyGetNames(string(label));
+      vector<string> devNames = core->getDevicePropertyNames(label);
       *num = devNames.size();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -424,13 +424,13 @@ G2SCLIENTC_API g2s_getDevicePropertyNames(const char* label, char** names, size_
    CHECK_INSTANCE;
    try
    {
-      vector<string> devNames = core->propertyGetNames(string(label));
+      vector<string> devNames = core->getDevicePropertyNames(label);
       for (int i=0; i<min(numNames, devNames.size()); i++)
       {
          STRCPYFUNC((names)[i], min(devNames[i].size() + 1, maxLength), devNames[i].c_str());
       }
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -450,9 +450,9 @@ G2SCLIENTC_API g2s_getProperty(const char* label, const char* propName, char* va
    CHECK_INSTANCE;
    try
    {
-      STRCPYFUNC(value, maxLength, core->propertyGetValue(string(label), string(propName)).c_str());
+      STRCPYFUNC(value, maxLength, core->getProperty(label, propName).c_str());
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -474,9 +474,9 @@ G2SCLIENTC_API g2s_getPropertyFromCache(const char* label, const char* propName,
    CHECK_INSTANCE;
    try
    {
-      STRCPYFUNC(value, maxLength, core->propertyGetValueFromCache(string(label), string(propName)).c_str());
+      STRCPYFUNC(value, maxLength, core->getPropertyFromCache(label, propName).c_str());
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -495,9 +495,9 @@ G2SCLIENTC_API g2s_setProperty(const char* label, const char* propName, const ch
    CHECK_INSTANCE;
    try
    {
-      core->propertySetValue(string(label), string(propName), string(value));
+      core->setProperty(label, propName, value);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -513,9 +513,9 @@ G2SCLIENTC_API g2s_hasProperty(const char* label, const char* propName, g2s_bool
    CHECK_INSTANCE;
    try
    {
-      *hasProperty = core->propertyExists(string(label), string(propName)) ? g2s_true : g2s_false;
+      *hasProperty = core->hasProperty(label, propName) ? g2s_true : g2s_false;
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -535,10 +535,10 @@ G2SCLIENTC_API g2s_getNumberOfAllowedPropertyValues(const char* label, const cha
    CHECK_INSTANCE;
    try
    {
-      vector<string> propValues = core->propertyGetAllowedValues(string(label), string(propName));
+      vector<string> propValues = core->getAllowedPropertyValues(label, propName);
       *num = propValues.size();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -561,13 +561,13 @@ G2SCLIENTC_API g2s_getAllowedPropertyValues(const char* label, const char* propN
    CHECK_INSTANCE;
    try
    {
-      vector<string> propValues = core->propertyGetAllowedValues(string(label), string(propName));
+      vector<string> propValues = core->getAllowedPropertyValues(label, propName);
       for (int i=0; i<min(numValues, propValues.size()); i++)
       {
 			STRCPYFUNC(values[i], (size_t)min((int)propValues[i].size() + 1, maxLength), propValues[i].c_str());
       }
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -585,9 +585,9 @@ G2SCLIENTC_API g2s_isPropertyReadOnly(const char* label, const char* propName, g
    CHECK_INSTANCE;
    try
    {
-      *readonly = core->propertyIsReadOnly(string(label), string(propName)) ? g2s_true : g2s_false;
+      *readonly = core->isPropertyReadOnly(label, propName) ? g2s_true : g2s_false;
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -605,9 +605,9 @@ G2SCLIENTC_API g2s_hasPropertyLimits(const char* label, const char* propName, g2
    CHECK_INSTANCE;
    try
    {
-      *hasLimits = core->propertyHasLimits(string(label), string(propName)) ? g2s_true : g2s_false;
+      *hasLimits = core->hasPropertyLimits(label, propName) ? g2s_true : g2s_false;
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -626,9 +626,9 @@ G2SCLIENTC_API g2s_getPropertyLowerLimit(const char* label, const char* propName
    CHECK_INSTANCE;
    try
    {
-      *limit = core->propertyGetLowerLimit(string(label), string(propName));
+      *limit = core->getPropertyLowerLimit(label, propName);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -647,9 +647,9 @@ G2SCLIENTC_API g2s_getPropertyUpperLimit(const char* label, const char* propName
    CHECK_INSTANCE;
    try
    {
-      *limit = core->propertyGetUpperLimit(string(label), string(propName));
+      *limit = core->getPropertyUpperLimit(label, propName);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -665,6 +665,8 @@ G2SCLIENTC_API g2s_getPropertyUpperLimit(const char* label, const char* propName
 G2SCLIENTC_API g2s_getPropertyType(const char* label, const char* propName, enum g2s_PropertyType* type)
 {
    CHECK_INSTANCE;
+   // TODO
+   /*
    try
    {
       g2s::client::G2SPROPERTYTYPE mmType = core->propertyGetType(string(label), string(propName));
@@ -683,13 +685,14 @@ G2SCLIENTC_API g2s_getPropertyType(const char* label, const char* propName, enum
          *type = Integer;
          break;
       default:
-         throw g2s::G2SException("Unknown property type");
+         throw CMMError("Unknown property type");
       }
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
+   */
    return G2S_OK();
 }
 
@@ -703,9 +706,9 @@ G2SCLIENTC_API g2s_deviceBusy(const char* deviceName, g2s_bool* busy)
    CHECK_INSTANCE;
    try
    {
-      *busy = core->deviceIsBusy(string(deviceName)) ? g2s_true : g2s_false;
+      *busy = core->deviceBusy(deviceName) ? g2s_true : g2s_false;
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -722,12 +725,12 @@ G2SCLIENTC_API g2s_getCameraDevice(char* buffer, size_t maxLength)
    CHECK_INSTANCE;
    try
    {
-      string camera = core->deviceGetCamera();
+      string camera = core->getCameraDevice();
       if (camera.size() >= maxLength)
-         throw g2s::G2SException("Camera name too long to fit in the buffer");
+         throw CMMError("Camera name too long to fit in the buffer");
       STRCPYFUNC(buffer, maxLength, camera.c_str());
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -751,9 +754,9 @@ G2SCLIENTC_API g2s_startSequenceAcquisition(long numImages, double intervalMs, g
    CHECK_INSTANCE;
    try
    {
-      core->seqStartAcquisition(numImages, intervalMs, stopOnOverflow == g2s_true ? true : false);
+      core->startSequenceAcquisition(numImages, intervalMs, stopOnOverflow == g2s_true ? true : false);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -767,7 +770,7 @@ G2SCLIENTC_API g2s_prepareSequenceAcquisition(const char* cameraLabel)
    {
       core->prepareSequenceAcquisition(cameraLabel);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -793,9 +796,9 @@ G2SCLIENTC_API g2s_startContinuousSequenceAcquisition(double intervalMs)
    CHECK_INSTANCE;
    try
    {
-      core->seqStartContinuousAcquisition(intervalMs);
+      core->startContinuousSequenceAcquisition(intervalMs);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -810,9 +813,9 @@ G2SCLIENTC_API g2s_stopSequenceAcquisition()
    CHECK_INSTANCE;
    try
    {
-      core->seqStopAcquisition();
+      core->stopSequenceAcquisition();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -828,9 +831,9 @@ G2SCLIENTC_API g2s_isSequenceRunning(g2s_bool* running)
    CHECK_INSTANCE;
    try
    {
-      *running = core->seqIsRunning() ? g2s_true : g2s_false;
+      *running = core->isSequenceRunning() ? g2s_true : g2s_false;
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -849,9 +852,9 @@ G2SCLIENTC_API g2s_getLastImage(unsigned char* img, size_t bufSize)
    CHECK_INSTANCE;
    try
    {
-      memmove(img, &core->seqGetLastImage()[0], bufSize);
+      memmove(img, core->getLastImage(), bufSize);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -870,9 +873,9 @@ G2SCLIENTC_API g2s_popNextImage(unsigned char* img, size_t bufSize)
    CHECK_INSTANCE;
    try
    {
-      memmove(img, &core->seqPopNextImage()[0], bufSize);
+      memmove(img, core->popNextImage(), bufSize);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -892,17 +895,19 @@ G2SCLIENTC_API g2s_popNextImage(unsigned char* img, size_t bufSize)
 G2SCLIENTC_API g2s_getLastImageMD(unsigned char* img, size_t bufSize, g2s_ImageInfo* inf)
 {
    CHECK_INSTANCE;
+   // TODO
+   /*
    try
    {
-      g2s::G2SConfig md;
       std::vector<unsigned char> buf = core->seqGetLastImage(md);
 		inf->frameNumber = (unsigned)atoi(md.getString("ImageNumber", "0").c_str());
       memmove(img, &buf[0], bufSize);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
+   */
    return G2S_OK();
 }
 
@@ -918,6 +923,8 @@ G2SCLIENTC_API g2s_getLastImageMD(unsigned char* img, size_t bufSize, g2s_ImageI
 G2SCLIENTC_API g2s_popNextImageMD(unsigned char* img, size_t bufSize, g2s_ImageInfo* inf)
 {
    CHECK_INSTANCE;
+   // TODO
+   /*
    try
    {
       g2s::G2SConfig md;
@@ -925,10 +932,11 @@ G2SCLIENTC_API g2s_popNextImageMD(unsigned char* img, size_t bufSize, g2s_ImageI
 		inf->frameNumber = (unsigned)atoi(md.getString("ImageNumber", "0").c_str());
       memmove(img, &buf[0], bufSize);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
+   */
    return G2S_OK();
 }
 
@@ -939,7 +947,7 @@ G2SCLIENTC_API g2s_popNextImageMD(unsigned char* img, size_t bufSize, g2s_ImageI
 G2SCLIENTC_API g2s_getRemainingImageCount(unsigned* count)
 {
    CHECK_INSTANCE;
-   *count = core->cbuffGetRemainingImageCount();
+   *count = core->getRemainingImageCount();
    return G2S_OK();
 }
 
@@ -950,7 +958,7 @@ G2SCLIENTC_API g2s_getRemainingImageCount(unsigned* count)
 G2SCLIENTC_API g2s_getBufferTotalCapacity(unsigned* capacity)
 {
    CHECK_INSTANCE;
-   *capacity = core->cbuffGetTotalCapacity();
+   *capacity = core->getBufferTotalCapacity();
    return G2S_OK();
 }
 
@@ -961,7 +969,7 @@ G2SCLIENTC_API g2s_getBufferTotalCapacity(unsigned* capacity)
 G2SCLIENTC_API g2s_getBufferFreeCapacity(unsigned* capacity)
 {
    CHECK_INSTANCE;
-   *capacity = core->cbuffGetFreeCapacity();
+   *capacity = core->getBufferFreeCapacity();
    return G2S_OK();
 }
 
@@ -975,7 +983,7 @@ G2SCLIENTC_API g2s_getBufferFreeCapacity(unsigned* capacity)
 G2SCLIENTC_API g2s_isBufferOverflowed(g2s_bool* overflowed)
 {
    CHECK_INSTANCE;
-   *overflowed = core->cbuffIsOverflowed() ? g2s_true : g2s_false;
+   *overflowed = core->isBufferOverflowed() ? g2s_true : g2s_false;
    return G2S_OK();
 }
 
@@ -1001,9 +1009,9 @@ G2SCLIENTC_API g2s_setCircularBufferMemoryFootprint(unsigned sizeMB)
    CHECK_INSTANCE;
    try
    {
-      core->cbuffSetMemoryFootprint(sizeMB);
+      core->setCircularBufferMemoryFootprint(sizeMB);
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -1018,7 +1026,7 @@ G2SCLIENTC_API g2s_initializeCircularBuffer()
    {
       core->initializeCircularBuffer();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
@@ -1034,9 +1042,9 @@ G2SCLIENTC_API g2s_clearCircularBuffer()
    CHECK_INSTANCE;
    try
    {
-      core->cbuffClear();
+      core->clearCircularBuffer();
    }
-   catch(g2s::G2SException& e)
+   catch(CMMError& e)
    {
       return G2S_ERROR(e);
    }
