@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include "MMCoreC.h"
+#include "MMCore.h"
+#include "Error.h"
+#include <string>
 
 #ifdef WIN32
 #define STRCPYFUNC(dest,size,src) strcpy_s(dest,size,src)
@@ -11,6 +14,7 @@
 #endif
 
 using namespace std;
+CMMCore* core = 0;
 
 string lastErrorText;
 int lastErrorCode(0);
@@ -20,7 +24,7 @@ int G2S_OK()
    return g2s_resetError();
 }
 
-int G2S_ERROR(g2s::G2SException& e)
+int G2S_ERROR(CMMError& e)
 {
    lastErrorText = e.what();
    lastErrorCode = e.code();
@@ -50,7 +54,7 @@ G2SCLIENTC_API g2s_create_client()
 {
    if (core == 0)
    {
-      core = new g2s::client::G2SClient();
+      core = new MMCore();
       return G2S_OK();
    }
    
@@ -77,41 +81,7 @@ G2SCLIENTC_API g2s_delete_client()
 G2SCLIENTC_API g2s_connect()
 {
    CHECK_INSTANCE;
-   try
-   {
-		unsigned short portCommand = DEFAULT_PORT_RPC;
-      //G2SServiceClient::Instance().startServer(portCommand);
-		for(int i = 0; i < 10; i++)
-		{
-			bool isRunning = true;//G2SServiceClient::Instance().isServerRunning();
-			if(isRunning)
-			{
-				try
-				{
-					core->netConnectLocal(portCommand);
-					return G2S_OK();
-				}
-				catch(g2s::G2SException& e)
-				{
-					lastErrorText = e.what();
-					lastErrorCode = e.code();
-				}
-			}
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
-		if(lastErrorCode == 0)
-		{
-			lastErrorText = "Unable to connect Go2Scope server";
-			lastErrorCode = g2s_SERVER_UNAVAILABLE;
-		}
-		return lastErrorCode;
-   }
-   catch(g2s::G2SException& e)
-   {
-      lastErrorText = e.what();
-      lastErrorCode = e.code();
-      return lastErrorCode;
-   }
+ 	return G2S_OK();
 }
 
 /**
@@ -121,7 +91,6 @@ G2SCLIENTC_API g2s_connect()
 G2SCLIENTC_API g2s_disconnect()
 {
    CHECK_INSTANCE;
-   //core->netDisconnect();
    return G2S_OK();
 }
 
@@ -132,7 +101,7 @@ G2SCLIENTC_API g2s_disconnect()
 G2SCLIENTC_API g2s_shutDown()
 {
 	CHECK_INSTANCE;
-   //G2SServiceClient::Instance().stopServer();
+   // TODO:
 	return G2S_OK();
 }
 
@@ -144,17 +113,8 @@ G2SCLIENTC_API g2s_shutDown()
 G2SCLIENTC_API g2s_getActiveClients(int* clients)
 {
 	CHECK_INSTANCE;
-	try
-	{
-		*clients = G2SServiceClient::Instance().numberOfClients();
-		return G2S_OK();
-	}
-	catch(g2s::G2SException& e)
-	{
-		lastErrorText = e.what();
-		lastErrorCode = e.code();
-		return lastErrorCode;
-	}
+   clients = 0;
+   return G2S_OK();
 }
 
 /**
