@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "MMCoreC.h"
-#include "..\mmCoreAndDevices\MMCore\MMCore.h"
-#include "..\mmCoreAndDevices\MMCore\Error.h"
+#include "MMCore\MMCore.h"
+#include "MMCore\Error.h"
 #include <string>
 
 #ifdef WIN32

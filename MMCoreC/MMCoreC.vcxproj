@@ -65,25 +65,22 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(MM_BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\mmCoreAndDevices;..\3rdParty\boost-versions\boost_1_77_0</AdditionalIncludeDirectories>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>G2SCore.lib;G2SNet.lib;G2SClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MMCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(TargetDir)$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>$(OutDir);..\3rdParty\boost-versions\boost_1_77_0-lib-x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>mkdir $(BUILD_DIR)\lib
-mkdir $(BUILD_DIR)\bin
-mkdir $(BUILD_DIR)\include\MMCoreC
-copy "$(TargetPath)" $(BUILD_DIR)\bin\
-copy "$(TargetDir)$(TargetName).lib" $(BUILD_DIR)\lib
-copy "$(SRCROOT)\MMCoreC\MMCoreC.h" $(BUILD_DIR)\include\MMCoreC\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -100,23 +97,20 @@ copy "$(SRCROOT)\MMCoreC\MMCoreC.h" $(BUILD_DIR)\include\MMCoreC\</Command>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(MM_BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\mmCoreAndDevices;..\3rdParty\boost-versions\boost_1_77_0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>G2SCore.lib;G2SNet.lib;G2SClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MMCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>$(OutDir);..\3rdParty\boost-versions\boost_1_77_0-lib-x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>mkdir $(BUILD_DIR)\lib
-mkdir $(BUILD_DIR)\bin
-mkdir $(BUILD_DIR)\include\MMCoreC
-copy "$(TargetPath)" $(BUILD_DIR)\bin\
-copy "$(TargetDir)$(TargetName).lib" $(BUILD_DIR)\lib
-copy "$(SRCROOT)\MMCoreC\MMCoreC.h" $(BUILD_DIR)\include\MMCoreC\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -135,6 +129,7 @@ copy "$(SRCROOT)\MMCoreC\MMCoreC.h" $(BUILD_DIR)\include\MMCoreC\</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Version.h" />
     <ClInclude Include="MMCoreC.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
