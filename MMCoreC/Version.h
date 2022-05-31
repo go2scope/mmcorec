@@ -1,7 +1,7 @@
 #pragma once
-#define VERSION_MAJOR_SDK							2
-#define VERSION_MINOR_SDK							1
-#define VERSION_REVISION_SDK						1
+#define VERSION_MAJOR_SDK							1
+#define VERSION_MINOR_SDK							0
+#define VERSION_REVISION_SDK						0
 
 #define VERSION_SDK VERSION_MAJOR_SDK, VERSION_MINOR_SDK, VERSION_REVISION_SDK, 0
 
@@ -13,5 +13,5 @@
 #define G2S_VERSION PACK_VER(VERSION_MAJOR_SDK, VERSION_MINOR_SDK, VERSION_REVISION_SDK)
 
 #define G2S_COMPANY									"Luminous Point LLC"
-#define G2S_COPYRIGHT								"Copyright (C) 2011 - 2021 by Luminous Point LLC"
-#define G2S_PRODUCT									"Go2Scope"
+#define G2S_COPYRIGHT								"Copyright (C) 2022 by Luminous Point LLC"
+#define G2S_PRODUCT									"MMCoreC"

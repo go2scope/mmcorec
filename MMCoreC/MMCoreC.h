@@ -55,20 +55,21 @@ extern "C" {
       Integer
    } g2s_PropertyType;
 
-   // initialization of the DLL
-   G2SCLIENTC_API g2s_create_client();
-   G2SCLIENTC_API g2s_delete_client();
+   // initialization of the MMCC
+   G2SCLIENTC_API g2s_create_mmcc();
+   G2SCLIENTC_API g2s_delete_mmcc();
+   G2SCLIENTC_API g2s_initialize();
+   G2SCLIENTC_API g2s_getVersionInfo(char* info, int maxLength);
+   G2SCLIENTC_API g2s_getAPIVersionInfo(char* info, int maxLength);
+   G2SCLIENTC_API g2s_initialize();
+
+   // device setup
+   G2SCLIENTC_API g2s_load_device(const char* label, const char* moduleName, const char* deviceName);
 
    // error handling
    G2SCLIENTC_API g2s_getLastErrorText(char* errMessage, int maxLength);
    G2SCLIENTC_API g2s_getLastErrorCode();
    G2SCLIENTC_API g2s_resetError();
-
-   // connection to the server
-   G2SCLIENTC_API g2s_connect();
-   G2SCLIENTC_API g2s_disconnect();
-	G2SCLIENTC_API g2s_shutDown();
-	G2SCLIENTC_API g2s_getActiveClients(int* clients);
 
    // general property API
 	G2SCLIENTC_API g2s_getNumberOfDeviceProperties(const char* label, size_t* num);

@@ -1,4 +1,4 @@
-// G2SClient.cpp : Defines the exported functions for the DLL application.
+//MMCoreC.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "stdafx.h"
@@ -38,7 +38,7 @@ int G2S_ERROR(int code, const char* text)
    return code;
 }
 
-#define CHECK_INSTANCE if (core == 0) return G2S_ERROR(g2s_INVALID_INSTANCE, "G2SClient instance not initialized.")
+#define CHECK_INSTANCE if (core == 0) return G2S_ERROR(g2s_INVALID_INSTANCE, "MMCoreC instance not initialized.")
 
 
 #ifdef __cplusplus
@@ -48,9 +48,9 @@ extern "C" {
 
 /**
  * Creates an instance of the G2SClient.
- * If the instance was already initialized it will take no action and return the g2s_INSTANCE_EXISTS code
+ * The instance is a singleton.
  */
-G2SCLIENTC_API g2s_create_client()
+G2SCLIENTC_API g2s_create_mmcc()
 {
    if (core == 0)
    {
@@ -65,7 +65,7 @@ G2SCLIENTC_API g2s_create_client()
  * Deletes the go2scope instance.
  * If instance does not exist, no action will be taken.
  */
-G2SCLIENTC_API g2s_delete_client()
+G2SCLIENTC_API g2s_delete_mmcc()
 {
    delete core;
    core = 0;
@@ -73,47 +73,47 @@ G2SCLIENTC_API g2s_delete_client()
    return G2S_OK();
 }
 
-/**
- * Connects to the local Go2Scope server.
- * If the server is not already running, a startup will be attempted using
- * MMAdmin service
- */
-G2SCLIENTC_API g2s_connect()
+G2SCLIENTC_API g2s_initialize()
 {
    CHECK_INSTANCE;
- 	return G2S_OK();
-}
-
-/**
- * Disconnect from the Go2Scope server.
- * If the server was already disconnected, no action will be taken.
- */
-G2SCLIENTC_API g2s_disconnect()
-{
-   CHECK_INSTANCE;
+   try
+   {
+      core->initializeAllDevices();
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
    return G2S_OK();
 }
 
-/**
- * Shut down the Go2Scope server.
- * If the server was already shut down, no action will be taken.
- */
-G2SCLIENTC_API g2s_shutDown()
+G2SCLIENTC_API g2s_load_device(const char* label, const char* moduleName, const char* deviceName)
 {
-	CHECK_INSTANCE;
-   // TODO:
-	return G2S_OK();
+   CHECK_INSTANCE;
+   try
+   {
+      core->loadDevice(label, moduleName, deviceName);
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
 }
 
-/**
- * Get number of active clients from the Go2Scope server
- * Current client is included in the count
- * @param clients - Number of active clients
- */
-G2SCLIENTC_API g2s_getActiveClients(int* clients)
+G2SCLIENTC_API g2s_getVersionInfo(char* info, int maxLength)
 {
-	CHECK_INSTANCE;
-   clients = 0;
+   CHECK_INSTANCE;
+   string verInfo = core->getVersionInfo();
+   strcpy_s(info, maxLength, verInfo.c_str());
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_getAPIVersionInfo(char* info, int maxLength)
+{
+   CHECK_INSTANCE;
+   string verInfo = core->getAPIVersionInfo();
+   strcpy_s(info, maxLength, verInfo.c_str());
    return G2S_OK();
 }
 
