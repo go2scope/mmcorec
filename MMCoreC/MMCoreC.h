@@ -61,7 +61,6 @@ extern "C" {
    G2SCLIENTC_API g2s_initialize();
    G2SCLIENTC_API g2s_getVersionInfo(char* info, int maxLength);
    G2SCLIENTC_API g2s_getAPIVersionInfo(char* info, int maxLength);
-   G2SCLIENTC_API g2s_initialize();
 
    // device setup
    G2SCLIENTC_API g2s_load_device(const char* label, const char* moduleName, const char* deviceName);
