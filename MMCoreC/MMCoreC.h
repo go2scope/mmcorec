@@ -87,8 +87,17 @@ extern "C" {
    G2SCLIENTC_API g2s_getPropertyType(const char* label, const char* propName, enum g2s_PropertyType* type);
    G2SCLIENTC_API g2s_deviceBusy(const char* deviceName, g2s_bool* busy);
 
+   // Focus (Z) stage control
+   G2SCLIENTC_API g2s_getFocusDevice(char* buffer, size_t maxLength);
+   G2SCLIENTC_API g2s_setFocusDevice(const char* buffer);
+
+   G2SCLIENTC_API g2s_setPosition(const char* stageLabel, double position);
+   G2SCLIENTC_API g2s_getPosition(const char* stageLabel, double* position);
+
    // Camera API
    G2SCLIENTC_API g2s_getCameraDevice(char* buffer, size_t maxLength);
+   G2SCLIENTC_API g2s_setCameraDevice(const char* buffer);
+
    G2SCLIENTC_API g2s_setExposure(double exp);
    G2SCLIENTC_API g2s_getExposure(double* exposure);
    G2SCLIENTC_API g2s_getImage(unsigned char* img, size_t bufSize);

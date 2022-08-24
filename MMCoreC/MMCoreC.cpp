@@ -715,6 +715,65 @@ G2SCLIENTC_API g2s_deviceBusy(const char* deviceName, g2s_bool* busy)
    return G2S_OK();
 }
 
+G2SCLIENTC_API g2s_getFocusDevice(char* buffer, size_t maxLength)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      string focusDev = core->getFocusDevice();
+      if (focusDev.size() >= maxLength)
+         throw CMMError("Name too long to fit in the buffer");
+      STRCPYFUNC(buffer, maxLength, focusDev.c_str());
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_setFocusDevice(const char* buffer)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      core->setFocusDevice(buffer);
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_setPosition(const char* stageLabel, double position)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      core->setPosition(stageLabel, position);
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_getPosition(const char* stageLabel, double* position)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      *position = core->getPosition(stageLabel);
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
 /**
  * Returns the name (label) of the current default camera.
  * @param buffer - camera label
@@ -731,6 +790,20 @@ G2SCLIENTC_API g2s_getCameraDevice(char* buffer, size_t maxLength)
       STRCPYFUNC(buffer, maxLength, camera.c_str());
    }
    catch(CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_setCameraDevice(const char* buffer)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      core->setCameraDevice(buffer);
+   }
+   catch (CMMError& e)
    {
       return G2S_ERROR(e);
    }
