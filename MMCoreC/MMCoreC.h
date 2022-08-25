@@ -135,3 +135,18 @@ extern "C" {
 #ifdef __cplusplus
 };
 #endif /* __cplusplus */
+
+// function prototypes for dynamic loading of the MMCoreC
+typedef int (*fn_create_mmcc)();
+typedef int (*fn_delete_mmcc)();
+typedef int (*fn_initialize)();
+
+typedef int (*fn_load_device)(const char*, const char*, const char*);
+typedef int (*fn_get_version_info)(char*, int);
+typedef int (*fn_get_api_version_info)(char*, int);
+typedef int (*fn_get_last_error_text)(char*, int);
+
+typedef int (*fn_set_position)(const char*, double);
+typedef int (*fn_get_position)(const char*, double*);
+
+typedef int (*fn_device_busy)(const char*, int*);
