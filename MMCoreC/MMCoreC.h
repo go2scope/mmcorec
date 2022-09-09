@@ -1,13 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////////
-// FILE:          G2SClientC.h
-// PROJECT:       Go2Scope
-// SUBSYSTEM:     G2SClientC.dll - API
+// FILE:          MMCoreC.h
+// PROJECT:       MMCoreC
+// SUBSYSTEM:     MMCoreC.dll - API
 //-----------------------------------------------------------------------------
-// DESCRIPTION:   Go2Scope remote camera interface
+// DESCRIPTION:   MMCore interface in C, whith no 3rd party dependencies
 //                
 // AUTHOR:        Nenad Amodaj
-// DATE:          08/01/2014
+// DATE:          08/01/2014 - 2022
 // COPYRIGHT:     Luminous Point LLC, http://luminous-point.com
+// LICENSE:       Apache License 2.0
 
 #pragma once
 #include <stdio.h>
@@ -49,21 +50,45 @@ extern "C" {
    } g2s_ImageInfo;
 
    enum g2s_PropertyType {
-      Undef,
+      Undef = 0,
       String,
       Float,
       Integer
    } g2s_PropertyType;
 
+   enum g2s_DeviceType {
+      UnknownType = 0,
+      AnyType,
+      CameraDevice,
+      ShutterDevice,
+      StateDevice,
+      StageDevice,
+      XYStageDevice,
+      SerialDevice,
+      GenericDevice,
+      AutoFocusDevice,
+      CoreDevice,
+      ImageProcessorDevice,
+      SignalIODevice,
+      MagnifierDevice,
+      SLMDevice,
+      HubDevice,
+      GalvoDevice
+   } g2s_DeviceType;
+
+
    // initialization of the MMCC
    G2SCLIENTC_API g2s_create_mmcc();
    G2SCLIENTC_API g2s_delete_mmcc();
-   G2SCLIENTC_API g2s_initialize();
+   G2SCLIENTC_API g2s_initialize_all_devices();
+   G2SCLIENTC_API g2s_initialize_device(const char* label);
    G2SCLIENTC_API g2s_getVersionInfo(char* info, int maxLength);
    G2SCLIENTC_API g2s_getAPIVersionInfo(char* info, int maxLength);
+   G2SCLIENTC_API g2s_loadSystemConfiguration(const char* fileName);
 
    // device setup
    G2SCLIENTC_API g2s_load_device(const char* label, const char* moduleName, const char* deviceName);
+   G2SCLIENTC_API g2s_unload_device(const char* label);
 
    // error handling
    G2SCLIENTC_API g2s_getLastErrorText(char* errMessage, int maxLength);
@@ -85,6 +110,15 @@ extern "C" {
    G2SCLIENTC_API g2s_getPropertyUpperLimit(const char* label, const char* propName, double* limit);
    G2SCLIENTC_API g2s_getPropertyType(const char* label, const char* propName, enum g2s_PropertyType* type);
    G2SCLIENTC_API g2s_deviceBusy(const char* deviceName, g2s_bool* busy);
+   G2SCLIENTC_API g2s_waitForDevice(const char* label);
+
+   // generic device discovery
+   G2SCLIENTC_API getLoadedDevices(char** names, size_t numNames, size_t maxLength);
+   G2SCLIENTC_API getLoadedDevicesOfType(enum g2s_DeviceType devType);
+   G2SCLIENTC_API getDeviceType(const char* label, enum g2s_DeviceType* devType);
+   G2SCLIENTC_API getDeviceLibrary(const char* label, char* library, int maxLength);
+   G2SCLIENTC_API getDeviceName(const char* label, char* devName, int maxLength);
+   G2SCLIENTC_API getDeviceDescription(const char* label, char* descr, int maxLength);
 
    // Focus (Z) stage control
    G2SCLIENTC_API g2s_getFocusDevice(char* buffer, size_t maxLength);
@@ -139,9 +173,12 @@ extern "C" {
 // function prototypes for dynamic loading of the MMCoreC
 typedef int (*fn_create_mmcc)();
 typedef int (*fn_delete_mmcc)();
-typedef int (*fn_initialize)();
+typedef int (*fn_initialize_all_devices)();
+typedef int (*fn_initialize_device)(const char*);
 
 typedef int (*fn_load_device)(const char*, const char*, const char*);
+typedef int (*fn_unload_device)(const char*);
+
 typedef int (*fn_get_version_info)(char*, int);
 typedef int (*fn_get_api_version_info)(char*, int);
 typedef int (*fn_get_last_error_text)(char*, int);
@@ -150,3 +187,7 @@ typedef int (*fn_set_position)(const char*, double);
 typedef int (*fn_get_position)(const char*, double*);
 
 typedef int (*fn_device_busy)(const char*, int*);
+
+typedef int (*fn_get_property)(const char*, const char*, char*, int);
+typedef int (*fn_set_property)(const char*, const char*, const char*, int);
+

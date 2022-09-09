@@ -41,7 +41,7 @@ void processReturnCode(HMODULE mmccModule, int returnCode) {
 int main()
 {
    // load the MMCoreC module
-   HMODULE mmcoreHandle = ::LoadLibrary(L"MMCoreC.dll");
+   HMODULE mmcoreHandle = ::LoadLibraryW(L"MMCoreC.dll");
    if (!mmcoreHandle) {
       DWORD errCode = GetLastError();
       cout << "Failed loading MMCoreC dynamic library, error code: " << errCode << endl;
@@ -62,17 +62,17 @@ int main()
    try {
       cout << "Running MMCoreC Demo..." << endl;
 
-      // load functions from the mmcc module
+      // load some functions from the mmcc module
       auto create_mmcc = getFunction<fn_create_mmcc>(mmcoreHandle, "g2s_create_mmcc");
       auto get_version_info = getFunction<fn_get_version_info>(mmcoreHandle, "g2s_getVersionInfo");
       auto get_api_version_info = getFunction<fn_get_api_version_info>(mmcoreHandle, "g2s_getAPIVersionInfo");
       auto load_device = getFunction<fn_load_device>(mmcoreHandle, "g2s_load_device");
-      auto initialize = getFunction<fn_initialize>(mmcoreHandle, "g2s_initialize");
+      auto initialize_all_devices = getFunction<fn_initialize_all_devices>(mmcoreHandle, "g2s_initialize_all_devices");
       auto set_position = getFunction<fn_set_position>(mmcoreHandle, "g2s_setPosition");
       auto get_position = getFunction<fn_get_position>(mmcoreHandle, "g2s_getPosition");
       auto device_busy = getFunction<fn_device_busy>(mmcoreHandle, "g2s_deviceBusy");
 
-      // create mmcc instance
+      // create mmcc instance (singleton)
       create_mmcc();
 
       // get version info to verify the basic function
@@ -92,13 +92,13 @@ int main()
          processReturnCode(mmcoreHandle, ret);
 
       // initialize loaded devices
-      ret = initialize();
+      ret = initialize_all_devices();
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
 
       // move stage
       // this is typically a non-blocking call (but depends on the driver impl.)
-      ret = set_position(devName.c_str(), 10.35);
+      ret = set_position(devName.c_str(), 10.35); // um
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
 

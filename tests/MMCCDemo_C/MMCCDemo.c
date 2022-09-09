@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
       return ret;
    }
 
-   ret = g2s_initialize();
+   ret = g2s_initialize_all_devices();
    if (ret != g2s_OK)
    {
       reportLastError(ret);
