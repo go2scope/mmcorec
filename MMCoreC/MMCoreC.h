@@ -113,12 +113,12 @@ extern "C" {
    G2SCLIENTC_API g2s_waitForDevice(const char* label);
 
    // generic device discovery
-   G2SCLIENTC_API getLoadedDevices(char** names, size_t numNames, size_t maxLength);
-   G2SCLIENTC_API getLoadedDevicesOfType(enum g2s_DeviceType devType);
-   G2SCLIENTC_API getDeviceType(const char* label, enum g2s_DeviceType* devType);
-   G2SCLIENTC_API getDeviceLibrary(const char* label, char* library, int maxLength);
-   G2SCLIENTC_API getDeviceName(const char* label, char* devName, int maxLength);
-   G2SCLIENTC_API getDeviceDescription(const char* label, char* descr, int maxLength);
+   G2SCLIENTC_API g2s_getLoadedDevices(char** names, size_t numNames, size_t maxLength);
+   G2SCLIENTC_API g2s_getLoadedDevicesOfType(enum g2s_DeviceType devType, char** names, size_t numNames, size_t maxLength);
+   G2SCLIENTC_API g2s_getDeviceType(const char* label, enum g2s_DeviceType* devType);
+   G2SCLIENTC_API g2s_getDeviceLibrary(const char* label, char* library, int maxLength);
+   G2SCLIENTC_API g2s_getDeviceName(const char* label, char* devName, int maxLength);
+   G2SCLIENTC_API g2s_getDeviceDescription(const char* label, char* descr, int maxLength);
 
    // Focus (Z) stage control
    G2SCLIENTC_API g2s_getFocusDevice(char* buffer, size_t maxLength);
@@ -175,6 +175,9 @@ typedef int (*fn_create_mmcc)();
 typedef int (*fn_delete_mmcc)();
 typedef int (*fn_initialize_all_devices)();
 typedef int (*fn_initialize_device)(const char*);
+typedef int (*fn_load_system_configuration)(const char*);
+typedef int (*fn_get_loaded_devices)(char**, size_t, size_t);
+typedef int (*fn_get_loaded_devices_of_type)(enum g2s_DeviceType devType, char**, size_t, size_t);
 
 typedef int (*fn_load_device)(const char*, const char*, const char*);
 typedef int (*fn_unload_device)(const char*);

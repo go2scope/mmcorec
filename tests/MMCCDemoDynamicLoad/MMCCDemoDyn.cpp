@@ -34,7 +34,6 @@ void processReturnCode(HMODULE mmccModule, int returnCode) {
    }
 }
 
-
 // ----
 // MAIN
 // ----
@@ -71,6 +70,9 @@ int main()
       auto set_position = getFunction<fn_set_position>(mmcoreHandle, "g2s_setPosition");
       auto get_position = getFunction<fn_get_position>(mmcoreHandle, "g2s_getPosition");
       auto device_busy = getFunction<fn_device_busy>(mmcoreHandle, "g2s_deviceBusy");
+      auto get_loaded_devices_of_type = getFunction<fn_get_loaded_devices_of_type>(mmcoreHandle, "g2s_getLoadedDevicesOfType");
+      auto get_loaded_devices = getFunction<fn_get_loaded_devices>(mmcoreHandle, "g2s_getLoadedDevices");
+      auto load_system_configuration = getFunction<fn_load_system_configuration>(mmcoreHandle, "g2s_loadSystemConfiguration");
 
       // create mmcc instance (singleton)
       create_mmcc();
@@ -85,16 +87,39 @@ int main()
       get_api_version_info(msgBuffer, MAX_MSG_LENGTH);
       cout << msgBuffer << endl;
 
-      // load stage device
-      string devName("SingleAxisStage");
-      int ret = load_device(devName.c_str(), "DemoCamera", "DStage");
+      // load configuration
+      int ret = load_system_configuration("cpx_demo.cfg");
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
 
-      // initialize loaded devices
-      ret = initialize_all_devices();
+      char** devLabels;
+      const int maxDevices(100);
+      devLabels = (char**)malloc(maxDevices * sizeof(char*));
+      for (size_t i = 0; i < maxDevices; i++)
+      {
+         devLabels[i] = (char*) malloc(g2s_MAX_MESSAGE_LENGTH);
+         devLabels[i][0] = '\0';
+      }
+
+      ret = get_loaded_devices(devLabels, maxDevices, g2s_MAX_MESSAGE_LENGTH);
+
+      int index(0);
+      cout << "Available devices: " << endl;
+      while (devLabels[index][0] != '\0' && index < maxDevices) {
+         cout << "\t" << devLabels[index++] << endl;
+      }
+
+      // free string buffer
+      for (size_t i = 0; i < maxDevices; i++)
+      {
+         free(devLabels[i]);
+      }
+      free(devLabels);
+
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
+
+      string devName("Z");
 
       // move stage
       // this is typically a non-blocking call (but depends on the driver impl.)

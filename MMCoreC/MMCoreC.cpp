@@ -770,12 +770,15 @@ G2SCLIENTC_API g2s_waitForDevice(const char* label)
    return G2S_OK();
 }
 
-G2SCLIENTC_API getLoadedDevices(char** names, size_t numNames, size_t maxLength)
+G2SCLIENTC_API g2s_getLoadedDevices(char** names, size_t numNames, size_t maxLength)
 {
    CHECK_INSTANCE;
    try
    {
       vector<string> devNames = core->getLoadedDevices();
+      if (devNames.size() > numNames)
+         throw CMMError("Buffer too small");
+
       for (int i = 0; i < min(numNames, devNames.size()); i++)
       {
          STRCPYFUNC((names)[i], min(devNames[i].size() + 1, maxLength), devNames[i].c_str());
@@ -788,7 +791,87 @@ G2SCLIENTC_API getLoadedDevices(char** names, size_t numNames, size_t maxLength)
    return G2S_OK();
 }
 
-G2SCLIENTC_API getDeviceType(const char* label, enum g2s_DeviceType* devType)
+G2SCLIENTC_API g2s_getLoadedDevicesOfType(enum g2s_DeviceType devType, char** names, size_t numNames, size_t maxLength)
+{
+   CHECK_INSTANCE;
+   try
+   {
+      MM::DeviceType mmType;
+      switch (devType)
+      {
+      case UnknownType:
+         mmType = MM::DeviceType::UnknownType;
+         break;
+      case MM::DeviceType::AnyType:
+         mmType = MM::DeviceType::AnyType;
+         break;
+      case MM::DeviceType::CameraDevice:
+         mmType = MM::DeviceType::CameraDevice;
+         break;
+      case MM::DeviceType::ShutterDevice:
+         mmType = MM::DeviceType::ShutterDevice;
+         break;
+      case MM::DeviceType::StateDevice:
+         mmType = MM::DeviceType::StateDevice;
+         break;
+      case MM::DeviceType::StageDevice:
+         mmType = MM::DeviceType::StageDevice;
+         break;
+      case MM::DeviceType::XYStageDevice:
+         mmType = MM::DeviceType::XYStageDevice;
+         break;
+      case MM::DeviceType::SerialDevice:
+         mmType = MM::DeviceType::SerialDevice;
+         break;
+      case MM::DeviceType::GenericDevice:
+         mmType = MM::DeviceType::GenericDevice;
+         break;
+      case MM::DeviceType::AutoFocusDevice:
+         mmType = MM::DeviceType::AutoFocusDevice;
+         break;
+      case MM::DeviceType::CoreDevice:
+         mmType = MM::DeviceType::CoreDevice;
+         break;
+      case MM::DeviceType::ImageProcessorDevice:
+         mmType = MM::DeviceType::ImageProcessorDevice;
+         break;
+      case MM::DeviceType::SignalIODevice:
+         mmType = MM::DeviceType::SignalIODevice;
+         break;
+      case MM::DeviceType::MagnifierDevice:
+         mmType = MM::DeviceType::MagnifierDevice;
+         break;
+      case MM::DeviceType::SLMDevice:
+         mmType = MM::DeviceType::SLMDevice;
+         break;
+      case MM::DeviceType::HubDevice:
+         mmType = MM::DeviceType::HubDevice;
+         break;
+      case MM::DeviceType::GalvoDevice:
+         mmType = MM::DeviceType::GalvoDevice;
+         break;
+
+      default:
+         throw CMMError("Unknown property type");
+      }
+
+      vector<string> devNames = core->getLoadedDevicesOfType(mmType);
+      if (devNames.size() > numNames)
+         throw CMMError("Buffer too small");
+
+      for (int i = 0; i < min(numNames, devNames.size()); i++)
+      {
+         STRCPYFUNC((names)[i], min(devNames[i].size() + 1, maxLength), devNames[i].c_str());
+      }
+   }
+   catch (CMMError& e)
+   {
+      return G2S_ERROR(e);
+   }
+   return G2S_OK();
+}
+
+G2SCLIENTC_API g2s_getDeviceType(const char* label, enum g2s_DeviceType* devType)
 {
    CHECK_INSTANCE;
    try
@@ -861,7 +944,7 @@ G2SCLIENTC_API getDeviceType(const char* label, enum g2s_DeviceType* devType)
 
 }
 
-G2SCLIENTC_API getDeviceLibrary(const char* label, char* library, int maxLength)
+G2SCLIENTC_API g2s_getDeviceLibrary(const char* label, char* library, int maxLength)
 {
    CHECK_INSTANCE;
    try
@@ -876,7 +959,7 @@ G2SCLIENTC_API getDeviceLibrary(const char* label, char* library, int maxLength)
    return G2S_OK();
 }
 
-G2SCLIENTC_API getDeviceName(const char* label, char* devName, int maxLength)
+G2SCLIENTC_API g2s_getDeviceName(const char* label, char* devName, int maxLength)
 {
    CHECK_INSTANCE;
    try
@@ -891,7 +974,7 @@ G2SCLIENTC_API getDeviceName(const char* label, char* devName, int maxLength)
    return G2S_OK();
 }
 
-G2SCLIENTC_API getDeviceDescription(const char* label, char* descr, int maxLength)
+G2SCLIENTC_API g2s_getDeviceDescription(const char* label, char* descr, int maxLength)
 {
    CHECK_INSTANCE;
    try
