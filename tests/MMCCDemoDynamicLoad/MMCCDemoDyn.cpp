@@ -2,6 +2,7 @@
 // Dynamically loads the MMCoreC library and demonstrates how to use the API
 
 #include <iostream>
+#include <vector>
 #include "MMCoreC.h"
 
 #ifdef WIN32
@@ -92,29 +93,26 @@ int main()
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
 
-      char** devLabels;
-      const int maxDevices(100);
-      devLabels = (char**)malloc(maxDevices * sizeof(char*));
-      for (size_t i = 0; i < maxDevices; i++)
+      vector<char*> devLabels(100);
+      for (size_t i = 0; i < devLabels.size(); i++)
       {
-         devLabels[i] = (char*) malloc(g2s_MAX_MESSAGE_LENGTH);
+         devLabels[i] = new char[g2s_MAX_MESSAGE_LENGTH];
          devLabels[i][0] = '\0';
       }
 
-      ret = get_loaded_devices(devLabels, maxDevices, g2s_MAX_MESSAGE_LENGTH);
+      ret = get_loaded_devices(&devLabels[0], devLabels.size(), g2s_MAX_MESSAGE_LENGTH);
 
       int index(0);
       cout << "Available devices: " << endl;
-      while (devLabels[index][0] != '\0' && index < maxDevices) {
+      while (devLabels[index][0] != '\0' && index < devLabels.size()) {
          cout << "\t" << devLabels[index++] << endl;
       }
 
       // free string buffer
-      for (size_t i = 0; i < maxDevices; i++)
+      for (size_t i = 0; i < devLabels.size(); i++)
       {
-         free(devLabels[i]);
+         delete devLabels[i];
       }
-      free(devLabels);
 
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
