@@ -35,6 +35,34 @@ void processReturnCode(HMODULE mmccModule, int returnCode) {
    }
 }
 
+class CStringArray
+{
+public:
+   CStringArray(size_t size, size_t stringLength)
+   {
+      for (size_t i = 0; i < size; i++) {
+         data.push_back(std::vector<char>(stringLength));
+         data.back()[0] = '\0'; // the char array is empty
+         ptrArray.push_back(&data.back()[0]);
+
+      }
+   }
+   ~CStringArray() {}
+
+   operator char** () { return &ptrArray[0]; }
+   size_t size() { return data.size(); }
+   size_t strLength()
+   {
+      if (size() == 0)
+         return 0;
+      return data[0].size();
+   }
+
+private:
+   std::vector<std::vector<char>> data;
+   std::vector<char*> ptrArray;
+};
+
 // ----
 // MAIN
 // ----
@@ -93,25 +121,14 @@ int main()
       if (ret != g2s_OK)
          processReturnCode(mmcoreHandle, ret);
 
-      vector<char*> devLabels(100);
-      for (size_t i = 0; i < devLabels.size(); i++)
-      {
-         devLabels[i] = new char[g2s_MAX_MESSAGE_LENGTH];
-         devLabels[i][0] = '\0';
-      }
+      CStringArray devLabels(100, g2s_MAX_MESSAGE_LENGTH);
 
-      ret = get_loaded_devices(&devLabels[0], devLabels.size(), g2s_MAX_MESSAGE_LENGTH);
+      ret = get_loaded_devices(devLabels, devLabels.size(), devLabels.strLength());
 
       int index(0);
       cout << "Available devices: " << endl;
       while (devLabels[index][0] != '\0' && index < devLabels.size()) {
          cout << "\t" << devLabels[index++] << endl;
-      }
-
-      // free string buffer
-      for (size_t i = 0; i < devLabels.size(); i++)
-      {
-         delete devLabels[i];
       }
 
       if (ret != g2s_OK)
