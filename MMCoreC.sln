@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MMCCDemoDynamicLoad", "test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASITiger", "mmCoreAndDevices\DeviceAdapters\ASITiger\ASITiger.vcxproj", "{7BAC0C19-0280-4CB2-A8FA-A6BF7C2A025E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialManager", "mmCoreAndDevices\DeviceAdapters\SerialManager\SerialManager.vcxproj", "{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -85,6 +87,12 @@ Global
 		{7BAC0C19-0280-4CB2-A8FA-A6BF7C2A025E}.Release|x64.ActiveCfg = Release|x64
 		{7BAC0C19-0280-4CB2-A8FA-A6BF7C2A025E}.Release|x64.Build.0 = Release|x64
 		{7BAC0C19-0280-4CB2-A8FA-A6BF7C2A025E}.Release|x86.ActiveCfg = Release|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Debug|x64.ActiveCfg = Debug|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Debug|x64.Build.0 = Debug|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Debug|x86.ActiveCfg = Debug|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Release|x64.ActiveCfg = Release|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Release|x64.Build.0 = Release|x64
+		{2EF7ACDC-F742-4CB6-B301-A242F52BE5C3}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
